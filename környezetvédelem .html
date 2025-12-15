@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Zöld Holnap - Környezetvédelem & Klíma Akció</title>
+    <style>
+        /* ===== CSS VÁLTOZÓK & ALAPOK ===== */
+        :root {
+            --primary-green: #0a5c36;
+            --accent-green: #2ecc71;
+            --earth-blue: #1e3a8a;
+            --warning-orange: #f39c12;
+            --danger-red: #e74c3c;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            overflow-x: hidden;
+        }
+
+        /* ===== ERDŐ HÁTTÉR ===== */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=1920&h=1080&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: -2;
+        }
+
+        /* Overlay a szöveg olvashatóságáért */
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 92, 54, 0.85) 0%, rgba(30, 58, 138, 0.85) 100%);
+            z-index: -1;
+        }
+
+        /* Halvány animált fényeffekt az erdő fölött */
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
+            animation: float 30s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-30px, -30px) rotate(360deg); }
+        }
+
+        /* ===== MODERN NAVIGÁCIÓ ===== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 92, 54, 0.95);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: var(--accent-green);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        nav a:hover {
+            transform: translateY(-3px);
+            background: rgba(46, 204, 113, 0.2);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content .subtitle {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent-green), #27ae60);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 1s ease 0.4s both;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(46, 204, 113, 0.6);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== KONTÉNER & SZEKCIÓK ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            margin: 6rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-bg {
+            background: white;
+            border-radius: 25px;
+            padding: 4rem 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-green), var(--earth-blue));
+        }
+
+        /* ===== TÍPUSGRAFIKA ===== */
+        h2 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-green), var(--earth-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--primary-green);
+            margin: 2rem 0 1rem;
+            font-weight: 700;
+        }
+
+        /* ===== STATISZTIKAI KÁRTYÁK ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(46, 204, 113, 0.15);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent-green), var(--earth-blue));
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-green), var(--earth-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* ===== PROGRESS BÁROK ===== */
+        .pollution-item {
+            margin: 2rem 0;
+        }
+
+        .pollution-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--warning-orange));
+            border-radius: 10px;
+            width: 0;
+            transition: width 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-green), var(--warning-orange));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 45%;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 2rem;
+            width: 24px;
+            height: 24px;
+            background: var(--accent-green);
+            border: 4px solid white;
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 6px rgba(46, 204, 113, 0.2);
+        }
+
+        /* ===== AKCIÓ KÁRTYÁK ===== */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .action-header {
+            background: linear-gradient(135deg, var(--accent-green), var(--primary-green));
+            color: white;
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-body {
+            padding: 2rem;
+        }
+
+        .action-list {
+            list-style: none;
+        }
+
+        .action-list li {
+            padding: 0.8rem 0;
+            padding-left: 2.5rem;
+            position: relative;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .action-list li:last-child {
+            border-bottom: none;
+        }
+
+        .action-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--accent-green);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: linear-gradient(135deg, var(--primary-green), #083425);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            margin-top: 6rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-links a:hover {
+            background: var(--accent-green);
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* ===== RESPONZÍV ===== */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px;
+            }
+
+            .timeline-dot {
+                left: 30px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== WARNING & SOLUTION BOXES ===== */
+        .warning-box, .solution-box {
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-left: 6px solid var(--danger-red);
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border-left: 6px solid var(--accent-green);
+        }
+
+        .warning-box h3, .solution-box h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <nav id="navbar">
+        <ul>
+            <li><a href="#hero">Főoldal</a></li>
+            <li><a href="#problemak">Válság</a></li>
+            <li><a href="#szennyezes">Szennyezés</a></li>
+            <li><a href="#felmelegedes">Felmelegedés</a></li>
+            <li><a href="#megoldasok">Megoldások</a></li>
+            <li><a href="#akcio">Cselekedj!</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>Zöld Holnap</h1>
+            <p class="subtitle">A klímaválság nem vár. Ismerd meg a tényeket és csatlakozz a változáshoz!</p>
+            <a href="#problemak" class="cta-button">Fedezd fel a veszélyeket</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="problemak" class="section">
+            <div class="section-bg">
+                <h2>🚨 A Föld vészhelyzetben van</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #475569;">Az emberi tevékenység olyan mértékben változtatta meg bolygónk egyensúlyát, amely minden életre hatással van. A döntések ideje most van.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">1.1°C</span>
+                        <div class="stat-label">Globális átlaghőmérséklet emelkedése</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">8M</span>
+                        <div class="stat-label">Tonna műanyag az óceánokban évente</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">7M</span>
+                        <div class="stat-label">Halál évente légszennyezés miatt</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">420</span>
+                        <div class="stat-label">PPM CO₂ - 3 millió éves csúcs</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="szennyezes" class="section">
+            <div class="section-bg">
+                <h2>🏭 Környezetszennyezés típusai</h2>
+                
+                <div class="pollution-item">
+                    <div class="pollution-header">
+                        <span>1. Légszennyezés</span>
+                        <span style="color: var(--danger-red); font-weight: 800;">84%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-width="84"></div>
+                    </div>
+                    <p style="margin-top: 1rem; color: #64748b;">A városok levegője kritikus szinten szennyezett. A szálló por és nitrogén-oxidok komoly egészségügyi kockázatot jelentenek.</p>
+                </div>
+
+                <div class="pollution-item">
+                    <div class="pollution-header">
+                        <span>2. Vízszennyezés</span>
+                        <span style="color: var(--warning-orange); font-weight: 800;">73%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-width="73"></div>
+                    </div>
+                    <p style="margin-top: 1rem; color: #64748b;">A folyók, tavak és óceánok elszenvedik az ipari és háztartási szennyezést. A mikroműanyag már az ivóvízben is jelen van.</p>
+                </div>
+
+                <div class="pollution-item">
+                    <div class="pollution-header">
+                        <span>3. Talajszennyezés</span>
+                        <span style="color: var(--accent-green); font-weight: 800;">68%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-width="68"></div>
+                    </div>
+                    <p style="margin-top: 1rem; color: #64748b;">A műtrágyák és vegyszerek hosszú távú károkat okoznak a termőföldben, veszélyeztetve az élelmiszerbiztonságot.</p>
+                </div>
+
+                <div class="warning-box">
+                    <h3>⚠️ Fő szennyezők</h3>
+                    <p style="margin-top: 1rem;">Szén-dioxid (CO₂), Nitrogén-oxidok (NOx), Szálló por (PM2.5), Kén-dioxid (SO₂), Nehézfémek, Mikroműanyagok</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="felmelegedes" class="section">
+            <div class="section-bg">
+                <h2>🌡️ Globális felmelegedés</h2>
+                
+                <h3>Mi az üvegházhatás?</h3>
+                <p>Az üvegházhatású gázok a légkörben megtartják a hőt, hasonlóan egy üvegházhoz. Ez természetes folyamat, de az emberi tevékenység túlzott mértékben fokozza - és ez okozza a válságot.</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>🌡️ 2023 - Rekordév</h4>
+                            <p>Valószínűleg a legmelegebb év volt 125.000 éve. A klímakáosz már itt van.</p>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>🔥 2015-2023</h4>
+                            <p>A 9 legmelegebb év ebben az időszakban volt. A trend egyértelmű és ijesztő.</p>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <h4>⚠️ +1,5°C - A határ</h4>
+                            <p>A veszélyes határ, amit 2030-ra érhetünk el. Utána nincs visszaút.</p>
+                        </div>
+                        <div class="timeline-dot"></div>
+                    </div>
+                </div>
+
+                <div class="warning-box">
+                    <h3>🔥 Következmények</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div>❄️ Jégsapkák olvadása</div>
+                        <div>🔥 Erdőtüzek</div>
+                        <div>🌪️ Intenzív viharok</div>
+                        <div>🏜️ Sivatagosodás</div>
+                        <div>🐅 Fajok kihalása</div>
+                        <div>💧 Vízválság</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="megoldasok" class="section">
+            <div class="section-bg">
+                <h2>💡 Megoldások & Megújuló Energia</h2>
+                
+                <div class="action-grid">
+                    <div class="action-card">
+                        <div class="action-header">
+                            <span>☀️</span> Napenergia
+                        </div>
+                        <div class="action-body">
+                            <p>A leggyorsabban terjedő tiszta energiaforrás. Egy háztartási napelemrendszer 25 év alatt 100 tonna CO₂-t spórol meg.</p>
+                        </div>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-header">
+                            <span>💨</span> Szélerőművek
+                        </div>
+                        <div class="action-body">
+                            <p>A szélenergia már 10%-át adja a világ energiájának. Egy szélturbina 1 hónap alatt termeli vissza gyártási energiáját.</p>
+                        </div>
+                    </div>
+                    <div class="action-card">
+                        <div class="action-header">
+                            <span>💧</span> Vízerőművek
+                        </div>
+                        <div class="action-body">
+                            <p>A leghatékonyabb megújuló forrás. Egy átlagos vízerőmű 90%-os hatásfokkal működik.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-box">
+                    <h3>✅ Mit tehetsz TE?</h3>
+                    <ul class="action-list" style="margin-top: 1.5rem;">
+                        <li>Használj tömegközlekedést, kerékpárt vagy elektromos autót!</li>
+                        <li>Válassz megújuló energiát a szolgáltatódtól!</li>
+                        <li>Csökkentsd a húsfogyasztást - próbáld a "húsmentes hétfőt"!</li>
+                        <li>Újrahasznosíts energikusan és komposztálj!</li>
+                        <li>Vásárolj kevesebb műanyagot - válassz csomagolásmentes boltokat!</li>
+                        <li>Támogass környezetvédelmi szervezeteket!</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="akcio" class="section">
+            <div class="section-bg" style="background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);">
+                <h2 style="background: linear-gradient(135deg, #0a5c36, #27ae60); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🌱 Cselekedj MOST!</h2>
+                <p style="font-size: 1.3rem; margin: 1.5rem 0; color: #0a5c36;">A klímaváltozás megállítása nem várhat. Minden nap számít, minden döntés számít.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 3rem 0;">
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3 style="color: #0a5c36; margin-bottom: 1rem;">Számold a szénlábnyomod</h3>
+                        <p style="color: #475569;">Ismerd meg, mennyi CO₂-t termelsz és hol csökkenthetsz!</p>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🌳</div>
+                        <h3 style="color: #0a5c36; margin-bottom: 1rem;">Ültess fákat</h3>
+                        <p style="color: #475569;">Egy fa élete során 1 tonna CO₂-t köt meg. Ültess Te is!</p>
+                    </div>
+                    <div style="text-align: center; padding: 2rem; background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
+                        <h3 style="color: #0a5c36; margin-bottom: 1rem;">Oszd meg!</h3>
+                        <p style="color: #475569;">Minél többen tudnak, annál nagyobb a nyomás a változásért!</p>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="#hero" class="cta-button" style="background: linear-gradient(135deg, #0a5c36, #27ae60);">
+                        Kezdj újra felülről →
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Zöld Holnap | Generációnk küldetése</p>
+        <div class="social-links">
+            <a href="#">📘</a>
+            <a href="#">🐦</a>
+            <a href="#">📷</a>
+            <a href="#">📧</a>
+        </div>
+        <p style="margin-top: 1rem; opacity: 0.8; font-style: italic;">"Nem örököltük a Földet a szüleinktől, hanem kölcsönkaptuk a gyermekeinktől."</p>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animate progress bars
+                    const progressBars = entry.target.querySelectorAll('.progress-fill');
+                    progressBars.forEach(bar => {
+                        const width = bar.getAttribute('data-width');
+                        setTimeout(() => {
+                            bar.style.width = width + '%';
+                        }, 200);
+                    });
+                    
+                    // Animate stat numbers
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        const finalValue = parseFloat(stat.textContent);
+                        let currentValue = 0;
+                        const increment = finalValue / 50;
+                        const timer = setInterval(() => {
+                            currentValue += increment;
+                            if (currentValue >= finalValue) {
+                                stat.textContent = stat.textContent;
+                                clearInterval(timer);
+                            } else {
+                                if (finalValue < 10) {
+                                    stat.textContent = currentValue.toFixed(1);
+                                } else {
+                                    stat.textContent = Math.floor(currentValue) + (stat.textContent.includes('M') ? 'M' : '');
+                                }
+                            }
+                        }, 30);
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
